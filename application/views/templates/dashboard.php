@@ -113,21 +113,6 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Report
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('laporan'); ?>">
-                    <i class="fas fa-fw fa-print"></i>
-                    <span>Cetak Laporan</span>
-                </a>
-            </li>
-
             <?php if (is_admin()) : ?>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
@@ -187,14 +172,6 @@
                                 <a class="dropdown-item" href="<?= base_url('profile'); ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="<?= base_url('profile/setting'); ?>">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="<?= base_url('profile/ubahpassword'); ?>">
-                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Change Password
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

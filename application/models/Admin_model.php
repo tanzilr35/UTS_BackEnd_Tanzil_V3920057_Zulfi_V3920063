@@ -30,12 +30,8 @@ class Admin_model extends CI_Model
 
     public function getUsers($id)
     {
-        /**
-         * ID disini adalah untuk data yang tidak ingin ditampilkan. 
-         * Maksud saya disini adalah 
-         * tidak ingin menampilkan data user yang digunakan, 
-         * pada managemen data user
-         */
+        // ID disini untuk data yang tidak ingin ditampilkan
+        // atau tidak ingin menampilkan data user yang digunakan pada managemen data user
         $this->db->where('id_user !=', $id);
         return $this->db->get('user')->result_array();
     }

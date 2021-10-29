@@ -1,12 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// Line 5-  = Kelas Profile sebagai menu profil admin atau staf gudang
 class Profile extends CI_Controller
 {
     protected $user;
 
+    // Line 10-21 = Membuat fungsi construct untuk mendeklarasikan variabel/objek yang sering digunakan
     public function __construct()
     {
+        // line 12-20 = Untuk memperbanyak deklarasi load
         parent::__construct();
         cek_login();
 
@@ -17,6 +20,7 @@ class Profile extends CI_Controller
         $this->user = $this->admin->get('user', ['id_user' => $userId]);
     }
 
+    // Line 21-26 = Membuat fungsi index untuk menu profile serta pemanggilan data
     public function index()
     {
         $data['title'] = "Profile";
@@ -24,6 +28,7 @@ class Profile extends CI_Controller
         $this->template->load('templates/dashboard', 'profile/user', $data);
     }
 
+    // Line 28-27 = Fungsi private validasi untuk membuat aturan saat mengubah data profil user
     private function _validasi()
     {
         $db = $this->admin->get('user', ['id_user' => $this->input->post('id_user', true)]);
@@ -39,6 +44,7 @@ class Profile extends CI_Controller
         $this->form_validation->set_rules('no_telp', 'Nomor Telepon', 'required|trim|numeric');
     }
 
+    // Line 48-56 = Fungsi private config untuk konfigurasi ketentuan saat upload foto profil
     private function _config()
     {
         $config['upload_path']      = "./assets/img/avatar";
@@ -49,6 +55,7 @@ class Profile extends CI_Controller
         $this->load->library('upload', $config);
     }
 
+    // Line 59-102 = Fungsi utama settings untuk mengedit data profil, yg memuat fungsi validasi dan config
     public function setting()
     {
         $this->_validasi();
@@ -94,8 +101,10 @@ class Profile extends CI_Controller
         }
     }
 
+    // Line 105-130 = Membuat fungsi ubahpassword
     public function ubahpassword()
     {
+        // Line 108-110 = Aturan saat mengubah password
         $this->form_validation->set_rules('password_lama', 'Password Lama', 'required|trim');
         $this->form_validation->set_rules('password_baru', 'Password Baru', 'required|trim|min_length[3]|differs[password_lama]');
         $this->form_validation->set_rules('konfirmasi_password', 'Konfirmasi Password', 'matches[password_baru]');

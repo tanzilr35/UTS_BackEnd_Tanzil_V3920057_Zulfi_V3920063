@@ -3,27 +3,29 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Barangkeluar extends CI_Controller
 {
+    // line 7 : membuat public fungsi construct
     public function __construct()
     {
+        // line 10-15 : untuk memperbanyak deklarasi load
         parent::__construct();
         cek_login();
 
         $this->load->model('Admin_model', 'admin');
         $this->load->library('form_validation');
     }
-
+    // line 17-22 : membuat fungsi index untuk menu barang keluar serta pemanggilan data
     public function index()
     {
         $data['title'] = "Barang keluar";
         $data['barangkeluar'] = $this->admin->getBarangkeluar();
         $this->template->load('templates/dashboard', 'barang_keluar/data', $data);
     }
-
+    // line 24-27 : membuat aturan validasi tanggal keluar, jenis dan satuan yang dipanggil dari library
     private function _validasi()
     {
         $this->form_validation->set_rules('tanggal_keluar', 'Tanggal Keluar', 'required|trim');
         $this->form_validation->set_rules('barang_id', 'Barang', 'required');
-
+       
         $input = $this->input->post('barang_id', true);
         $stok = $this->admin->get('barang', ['id_barang' => $input])['stok'];
         $stok_valid = $stok + 1;
@@ -37,7 +39,7 @@ class Barangkeluar extends CI_Controller
             ]
         );
     }
-
+    // line 43-48 : membuat fungsi add untuk CRUD pada tabel barang keluar
     public function add()
     {
         $this->_validasi();
@@ -45,7 +47,7 @@ class Barangkeluar extends CI_Controller
             $data['title'] = "Barang Keluar";
             $data['barang'] = $this->admin->get('barang', null, ['stok >' => 0]);
 
-            // Mendapatkan dan men-generate kode transaksi barang keluar
+            // Line 51-56 : Mendapatkan dan men-generate kode transaksi barang keluar
             $kode = 'T-BK-' . date('ymd');
             $kode_terakhir = $this->admin->getMax('barang_keluar', 'id_barang_keluar', $kode);
             $kode_tambah = substr($kode_terakhir, -5, 5);
@@ -55,6 +57,7 @@ class Barangkeluar extends CI_Controller
 
             $this->template->load('templates/dashboard', 'barang_keluar/add', $data);
         } else {
+            //line 61-72 : menginputkan barang yang kaluar
             $input = $this->input->post(null, true);
             $insert = $this->admin->insert('barang_keluar', $input);
 
@@ -67,7 +70,7 @@ class Barangkeluar extends CI_Controller
             }
         }
     }
-
+    // Line 74-84 : membuat fungsi delete merupakan bagian CRUD dengan mendapatkan id pada data yang akan dihapus
     public function delete($getId)
     {
         $id = encode_php_tags($getId);

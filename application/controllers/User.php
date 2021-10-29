@@ -3,8 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class User extends CI_Controller
 {
+    // line 7 : membuat public fungsi construct
     public function __construct()
     {
+        // line 10-15 : untuk memperbanyak deklarasi load
         parent::__construct();
         cek_login();
         if (!is_admin()) {
@@ -14,14 +16,14 @@ class User extends CI_Controller
         $this->load->model('Admin_model', 'admin');
         $this->load->library('form_validation');
     }
-
+    // line 19-25 : membuat fungsi index untuk menu user serta pemanggilan data
     public function index()
     {
         $data['title'] = "User Management";
         $data['users'] = $this->admin->getUsers(userdata('id_user'));
         $this->template->load('templates/dashboard', 'user/data', $data);
     }
-
+    // line 27-49 : membuat aturan validasi nama, no_tlp, role yang dipanggil dari library
     private function _validasi($mode)
     {
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
@@ -45,7 +47,7 @@ class User extends CI_Controller
             $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email' . $uniq_email);
         }
     }
-
+    // line 51-57 : membuat fungsi add untuk CRUD pada tabel user
     public function add()
     {
         $this->_validasi('add');
@@ -54,6 +56,7 @@ class User extends CI_Controller
             $data['title'] = "Tambah User";
             $this->template->load('templates/dashboard', 'user/add', $data);
         } else {
+            //line 60-80 : menginputkan user baru
             $input = $this->input->post(null, true);
             $input_data = [
                 'nama'          => $input['nama'],
@@ -75,7 +78,7 @@ class User extends CI_Controller
             }
         }
     }
-
+    // Line 50-70 membuat fungsi edit merupakan bagian CRUD dengan mendapatkan id pada data yang akan diedit
     public function edit($getId)
     {
         $id = encode_php_tags($getId);
@@ -104,7 +107,7 @@ class User extends CI_Controller
             }
         }
     }
-
+    // Line 111-120 : membuat fungsi delete merupakan bagian CRUD dengan mendapatkan id pada data yang akan dihapus
     public function delete($getId)
     {
         $id = encode_php_tags($getId);
@@ -114,13 +117,14 @@ class User extends CI_Controller
             set_pesan('data gagal dihapus.', false);
         }
         redirect('user');
-    }
-
+    } 
+    
+    // Line 123-134 = Fungsi toggle sebagai humburger toggle untuk sidebar saat website dibuka di hp
     public function toggle($getId)
     {
         $id = encode_php_tags($getId);
         $status = $this->admin->get('user', ['id_user' => $id])['is_active'];
-        $toggle = $status ? 0 : 1; //Jika user aktif maka nonaktifkan, begitu pula sebaliknya
+        $toggle = $status ? 0 : 1; // Jika user aktif maka nonaktifkan, begitu pula sebaliknya
         $pesan = $toggle ? 'user diaktifkan.' : 'user dinonaktifkan.';
 
         if ($this->admin->update('user', 'id_user', $id, ['is_active' => $toggle])) {
